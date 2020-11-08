@@ -29,10 +29,9 @@ export HOSTNAME=$(hostname)
 
 2. Сертификаты. Для работы docker registry и cервис авторизации необходимо [настроить сертификаты](https://docs.docker.com/registry/insecure/).
 
-    openssl genrsa -out certs/STS_docker_auth.key 2048
+    `openssl genrsa -out certs/STS_docker_auth.key 2048`
 
-    openssl req -new -x509 -sha256 -key certs/STS_docker_auth.key \
-      -out certs/STS_docker_auth.crt -days 365 -subj "/O=sergbelom/OU=Auth/CN=${HOSTNAME}"
+    `openssl req -new -x509 -sha256 -key certs/STS_docker_auth.key -out certs/STS_docker_auth.crt -days 365 -subj "/O=sergbelom/OU=Auth/CN=${HOSTNAME}"`
 
 Скопировать сертификаты из certs/*.crt в /usr/local/share/ca-certificates/
 
@@ -48,19 +47,19 @@ export HOSTNAME=$(hostname)
 
 - создать python окружение
 
-    make venv && . venv.authserver/bin/activate
+    `make venv && . venv.authserver/bin/activate`
 
 - установить необходимые пакеты (flask, pyjwt, pycrypto, cryptography)
 
-    make init
+    `make init`
 
 - запустить сервис
 
-    ./STS_docker_auth.py
+    `./STS_docker_auth.py`
 
 - запустить Docker Registry
 
-    docker-compose up -d && docker-compose logs
+    `docker-compose up -d`
 
 
 4. Авторизация. 
@@ -69,20 +68,20 @@ JSON с доступными пользователями находится в 
 
 - login и logout в сервис авторизации:
 
-    docker login https://${HOSTNAME}:5000
+    `docker login https://${HOSTNAME}:5000`
 
-    docker logout https://${HOSTNAME}:5000
+    `docker logout https://${HOSTNAME}:5000`
 
 - создание тега существующего образа для Docker Registry:
 
-    docker pull ubuntu:latest
+    `docker pull ubuntu:latest`
 
-    docker tag ubuntu:wily ${HOSTNAME}:5000/my/ubuntu:1.0.0
+    `docker tag ubuntu:wily ${HOSTNAME}:5000/my/ubuntu:latest`
 
 - команды pull и push для Docker Registry:
 
-    docker push ${HOSTNAME}:5000/my/ubuntu:1.0.0
+    `docker push ${HOSTNAME}:5000/my/ubuntu:1.0.0`
 
-    docker pull ${HOSTNAME}:5000/my/ubuntu:1.0.0
+    `docker pull ${HOSTNAME}:5000/my/ubuntu:1.0.0`
 
 если пользователь авторизован, то команды pull и push будут проходить успешно
