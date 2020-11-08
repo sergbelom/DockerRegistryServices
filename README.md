@@ -80,8 +80,8 @@ JSON с доступными пользователями находится в 
 
 - команды pull и push для Docker Registry:
 
-    `docker push ${HOSTNAME}:5000/my/ubuntu:1.0.0`
+    `docker push ${HOSTNAME}:5000/my/ubuntu:latest`
 
-    `docker pull ${HOSTNAME}:5000/my/ubuntu:1.0.0`
+    `docker pull ${HOSTNAME}:5000/my/ubuntu:latest`
 
-если пользователь авторизован, то команды pull и push будут проходить успешно
+Если пользователь авторизован, то команды pull и push будут проходить успешно.
