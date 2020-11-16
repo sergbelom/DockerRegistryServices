@@ -113,19 +113,12 @@ def auth():
     else:
         return response(401, {'error': 'incorrect username/password'})
 
-    
-#default=8443,
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--auth", default=AUTH,
-        help='Dictionary of form {"user": "password", ... }.')
-    parser.add_argument(
-        "--port", type=int, default=5001, help="HTTPS port.")
-    parser.add_argument(
-        "--cert", default=CERT, help="TLS cert (PEM file).")
-    parser.add_argument(
-        "--key",  default=KEY, help="TLS key (PEM file).")
+    parser.add_argument("--auth", default=AUTH, help='Dictionary of form {"user": "password", ... }.')
+    parser.add_argument("--port", type=int, default=5001, help="HTTPS port.")
+    parser.add_argument("--cert", default=CERT, help="TLS cert (PEM file).")
+    parser.add_argument("--key",  default=KEY, help="TLS key (PEM file).")
     args = parser.parse_args()
 
     with open(args.auth) as authfile:
@@ -137,7 +130,7 @@ if __name__ == "__main__":
         raise FileExistsError
    
     if not os.path.isfile(args.key):
-        LOG.error("cert file does not exist")
+        LOG.error("key file does not exist")
         raise FileExistsError
 
     with open(args.key) as keyfile:
