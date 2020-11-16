@@ -127,11 +127,11 @@ if __name__ == "__main__":
 
     if not os.path.isfile(args.cert):
         LOG.error("cert file does not exist")
-        raise FileExistsError
+        raise ValueError("cert file does not exist")
    
     if not os.path.isfile(args.key):
         LOG.error("key file does not exist")
-        raise FileExistsError
+        raise ValueError("key file does not exist")
 
     with open(args.key) as keyfile:
         SIGNKEY = keyfile.read()
