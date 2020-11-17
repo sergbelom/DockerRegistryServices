@@ -1,7 +1,7 @@
 **Сервис авторизации на основе JSON token с приватным Docker Registry**
 
 
-Dokcer позволяет локально развернуть приватное хранилище образов Docker Registry.
+Docker позволяет локально развернуть приватное хранилище образов Docker Registry.
 
 Доступ к Docker Registry можно реализовать на основе токен аутентификации.
 
@@ -116,3 +116,11 @@ JSON с доступными пользователями находится в 
 - остановить и удалить контейнер для Docker Registry можно командой
 
     `docker stop sts_docker_auth_registry_1 && docker rm sts_docker_auth_registry_1`
+
+6. TODO list:
+
+- упаковать STS_docker_auth в контейнер
+
+- мигрировать на python3
+
+- запустить контейнер внутри STS

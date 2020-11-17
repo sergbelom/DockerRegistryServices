@@ -1,16 +1,29 @@
-registry:
-  restart: always
-  image: registry:2
-  ports:
-    - 5000:5000
-  environment:
-    REGISTRY_HTTP_TLS_CERTIFICATE: /certs/myregistry.crt
-    REGISTRY_HTTP_TLS_KEY: /certs/myregistry.key
-    REGISTRY_AUTH: token
-    REGISTRY_AUTH_TOKEN_REALM: https://${HOSTNAME}:5001/api/auth
-    REGISTRY_AUTH_TOKEN_SERVICE: localhost
-    REGISTRY_AUTH_TOKEN_ISSUER: sergbelom
-    REGISTRY_AUTH_TOKEN_ROOTCERTBUNDLE: /certs/STS_docker_auth.crt
-  volumes:
-    - ${PWD}/certs:/certs
-    - ${PWD}/registry-storage:/var/lib/registry
+version: "3"
+
+services:
+  registry:
+    restart: always
+    image: registry:2
+    ports:
+      - 5000:5000
+    environment:
+      REGISTRY_HTTP_TLS_CERTIFICATE: /certs/myregistry.crt
+      REGISTRY_HTTP_TLS_KEY: /certs/myregistry.key
+      REGISTRY_AUTH: token
+      REGISTRY_AUTH_TOKEN_REALM: https://${HOSTNAME}:5001/api/auth
+      REGISTRY_AUTH_TOKEN_SERVICE: localhost
+      REGISTRY_AUTH_TOKEN_ISSUER: sergbelom
+      REGISTRY_AUTH_TOKEN_ROOTCERTBUNDLE: /certs/STS_docker_auth.crt
+    volumes:
+      - ${PWD}/certs:/certs
+      - ${PWD}/registry-storage:/var/lib/registry
+    depends_on:
+      - sts_docker_auth
+
+  sts_docker_auth:
+    container_name: sts_docker_auth
+    image: sergbelom/sts_docker_auth
+    ports:
+      - 5001:5001
+    volumes:
+      - ${PWD}/certs:/certs
