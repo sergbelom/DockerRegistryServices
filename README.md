@@ -1,118 +1,67 @@
-**Сервис авторизации на основе JSON token с приватным Docker Registry**
+
+**Развертывание сервера авторизации docker_auth**
 
 
-Dokcer позволяет локально развернуть приватное хранилище образов Docker Registry.
-
-Доступ к Docker Registry можно реализовать на основе токен аутентификации.
-
-Возможность разработки такого сервиса описана в [документации](https://docs.docker.com/registry/spec/auth/token/).
+1. Сертификаты.
 
 
-**Существующие сервисы авторизации**
+    `mkdir -p docker_auth_certificates`
+
+    `openssl req -newkey rsa:4096 -nodes -keyout docker_auth_certificates/server.key -x509 -days 365 -out docker_auth_certificates/server.pem -subj "/C=EU/ST=Germany/L=Freiburg/O=registry/CN=localhost"`
 
 
-Сущесвтует готовое решение [docker_auth](https://github.com/cesanta/docker_auth) разработанное на Go, которое позволяет настроить авторизацию с помощью разлчиных методов (лист пользователей, gooogle авторизация, github авторизация и т.п.)
-
-Разработка собственного решения обоснована необходимостью иметь встроенный сервис авторизации, как часть SLAM Testing Service (STS), написанного на C++.
+2. Получаем пример конфигурации docker_auth сервера
 
 
-**Сервис авторизации STS_docker_auth**
+    `mkdir -p docker_auth_config`
 
-Сервис авторизации разработан на python для токен-автризации на основе JSON web token.
+    ```
+    if [[ ! -f docker_auth_config/simple.yml ]]; then
+        curl --fail --location --output docker_auth_config/simple.yml https://github.com/cesanta/docker_auth/raw/master/examples/simple.yml
+    fi
+    sed -i 's|/path/to/|/ssl/|g' docker_auth_config/simple.yml
+    ```
 
 
-**Команды для разворачивания STS_docker_auth**
+3. Запуск registry-pod 
 
-1. Создать HOSTNAME
 
-    `export HOSTNAME=$(hostname)`
+    `docker run -d --name registry-pod --publish 127.0.0.1:5000:5000 --publish 127.0.0.1:5001:5001 alpine sh -c 'while true; do sleep 10; done'`
 
-2. Сертификаты.
 
-Для работы docker registry и cервис авторизации необходимо [настроить сертификаты](https://docs.docker.com/registry/insecure/).
+4. Запуск docker_auth
 
-- сертификаты для сервиса авторизации:
 
-    `openssl genrsa -out certs/STS_docker_auth.key 2048`
+    `docker run -d --name registry-auth --network container:registry-pod --mount type=bind,src=$(pwd)/docker_auth_config,dst=/config,readonly --mount type=bind,src=$(pwd)/docker_auth_certificates,dst=/ssl,readonly --env TZ=Europe/Berlin cesanta/docker_auth:1 --v=2 --alsologtostderr /config/simple.yml`
 
-    `openssl req -new -x509 -sha256 -key certs/STS_docker_auth.key -out certs/STS_docker_auth.crt -days 365 -subj "/O=sergbelom/OU=Auth/CN=${HOSTNAME}"`
 
-- сертфикаты для Docker Registry:
+5. Запуск registry:2.6.2 (на дефолтном registry:2 не работает из-за бага в docker)
 
-    `openssl genrsa -out certs/myregistry.key 2048`
 
-    `openssl req -new -x509 -sha256 -key certs/myregistry.key -out certs/myregistry.crt -days 365 -subj "/O=sergbelom/OU=Registry/CN=${HOSTNAME}"`
+    `docker run -d --name registry-registry --network container:registry-pod --mount type=bind,src=$(pwd)/docker_auth_certificates,dst=/ssl,readonly --env TZ=Europe/Berlin --env REGISTRY_AUTH=token --env REGISTRY_AUTH_TOKEN_REALM=https://localhost:5001/auth --env REGISTRY_AUTH_TOKEN_SERVICE="Docker registry" --env REGISTRY_AUTH_TOKEN_ISSUER="Acme auth server" --env REGISTRY_AUTH_TOKEN_ROOTCERTBUNDLE=/ssl/server.pem registry:2.6.2`
 
-- скопировать сертификаты из `certs/*.crt` в `/usr/local/share/ca-certificates/`
 
-    перейти в директорию certs:
+6. Команды для тестирования:
 
-    `sudo cp *.crt /usr/local/share/ca-certificates/`
 
-    обновить сертификаты:
+- login и logout в сервис авторизации
 
-    `sudo update-ca-certificates`
+    `docker login localhost:5000`
 
-- перезапустить docker сервис для обновления сертификатов
+    `docker logout localhost:5000`
 
-    `sudo service docker restart`
+    - существующие пользователи:
 
-3. Запуск сервиса авторизации STS_docker_auth.
+        user: admin  password: badmin
 
-STS_docker_auth на порту 5001, который слушает Docker Registry.
+        user: test password: 123
 
-В директории STS_docker_auth/STS_docker_auth необходимо:
-
-- создать python окружение
-
-    `make venv && . venv.STS_docker_auth/bin/activate`
-
-- установить необходимые пакеты (flask, pyjwt, pycrypto, cryptography)
-
-    `make init`
-
-- запустить сервис
-
-    `./STS_docker_auth.py`
-
-4. Запуск Docker Registry.
-
-Docker Registry будет запущен на порту 5000.
-
-- перейти в другой терминал и запустить Docker Registry из docker-compose.yml
-
-    `docker-compose up -d`
-
-4. Авторизация. 
-
-JSON с доступными пользователями находится в STS_docker_auth/users.auth
-
-- login и logout в сервис авторизации:
-
-    `docker login https://${HOSTNAME}:5000`
-
-    `docker logout https://${HOSTNAME}:5000`
-
-- создание тега образа для Docker Registry:
+- тестовый образ для push pull операций в registry:
 
     `docker pull ubuntu:latest`
 
-    `docker tag ubuntu:wily ${HOSTNAME}:5000/my/ubuntu:latest`
+    `docker tag ubuntu:wily localhost:5000/my/ubuntu:latest`
 
-- команды pull и push для Docker Registry:
+    `docker push localhost:5000/my/ubuntu:latest`
 
-    `docker push ${HOSTNAME}:5000/my/ubuntu:latest`
-
-    `docker pull ${HOSTNAME}:5000/my/ubuntu:latest`
-
-Если пользователь авторизован, то команды pull и push будут проходить успешно.
-
-В терминале с запущенным STS_docker_auth можно отслеживать лог авторизации.
-
-5. Остановка сервиса авторизации и контейнера Docker Registry.
-
-- сервис авторизации можно остановить стандартно в терминал Ctrl-C.
-
-- остановить и удалить контейнер для Docker Registry можно командой
-
-    `docker stop sts_docker_auth_registry_1 && docker rm sts_docker_auth_registry_1`
+    `docker pull localhost:5000/my/ubuntu:latest`

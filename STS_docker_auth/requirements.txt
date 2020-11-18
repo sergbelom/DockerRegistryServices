@@ -1,4 +1,0 @@
-flask
-pyjwt
-pycrypto
-cryptography
