@@ -93,6 +93,10 @@ JSON с доступными пользователями находится в 
 
     `docker logout https://${HOSTNAME}:5000`
 
+    существующие пользователи (доступны в users.auth):
+
+    `user: foo password: bar`
+
 - создание тега образа для Docker Registry:
 
     `docker pull ubuntu:latest`
