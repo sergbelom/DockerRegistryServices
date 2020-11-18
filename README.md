@@ -65,3 +65,13 @@
     `docker push localhost:5000/my/ubuntu:latest`
 
     `docker pull localhost:5000/my/ubuntu:latest`
+
+
+7. Остановить и удалить контейнеры.
+
+
+    `docker container stop registry-pod && docker container rm -v registry-pod`
+    
+    `docker container stop registry-auth && docker container rm -v registry-auth`
+    
+    `docker container stop registry-registry && docker container rm -v registry-registry`
