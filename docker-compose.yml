@@ -17,13 +17,21 @@ services:
     volumes:
       - ${PWD}/certs:/certs
       - ${PWD}/registry-storage:/var/lib/registry
+    networks:
+      - my-net
     depends_on:
       - sts_docker_auth
 
   sts_docker_auth:
-    container_name: sts_docker_auth
+    restart: always
     image: sergbelom/sts_docker_auth
+    container_name: sts_docker_auth
+    networks:
+      - my-net
     ports:
-      - 5001:5001
+    - "5001:5001"
     volumes:
       - ${PWD}/certs:/certs
+      - ${PWD}/auth_log:/auth_log
+networks:
+  my-net:

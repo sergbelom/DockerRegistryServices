@@ -1,0 +1,17 @@
+2020-11-20 21:19:01,083 - LOG STARTED
+2020-11-20 21:19:01,084 - certs/STS_docker_auth.crt
+2020-11-20 21:19:01,084 - certs/STS_docker_auth.key
+2020-11-20 21:19:01,084 - users.auth
+2020-11-20 21:19:01,088 - {u'foo': u'bar'}
+2020-11-20 21:19:01,092 -  * Running on https://0.0.0.0:5001/ (Press CTRL+C to quit)
+2020-11-20 21:19:16,620 - 192.168.160.1 - - [20/Nov/2020 21:19:16] "[37mGET /api/auth?account=foo&client_id=docker&offline_token=true&service=localhost HTTP/1.1[0m" 200 -
+2020-11-20 21:19:28,280 - 192.168.160.1 - - [20/Nov/2020 21:19:28] "[37mGET /api/auth?account=foo&client_id=docker&offline_token=true&service=localhost HTTP/1.1[0m" 200 -
+2020-11-20 21:22:22,758 - 192.168.160.1 - - [20/Nov/2020 21:22:22] "[37mGET /api/auth?account=foo&scope=repository%3Amy%2Fubuntu%3Apush%2Cpull&service=localhost HTTP/1.1[0m" 200 -
+2020-11-20 21:22:33,337 - 192.168.160.1 - - [20/Nov/2020 21:22:33] "[31m[1mGET /api/auth?scope=repository%3Amy%2Fubuntu%3Apush%2Cpull&service=localhost HTTP/1.1[0m" 401 -
+2020-11-20 21:22:33,345 - 192.168.160.1 - - [20/Nov/2020 21:22:33] "[31m[1mGET /api/auth?scope=repository%3Amy%2Fubuntu%3Apush%2Cpull&service=localhost HTTP/1.1[0m" 401 -
+2020-11-20 21:22:33,352 - 192.168.160.1 - - [20/Nov/2020 21:22:33] "[31m[1mGET /api/auth?scope=repository%3Amy%2Fubuntu%3Apush%2Cpull&service=localhost HTTP/1.1[0m" 401 -
+2020-11-20 21:22:33,359 - 192.168.160.1 - - [20/Nov/2020 21:22:33] "[31m[1mGET /api/auth?scope=repository%3Amy%2Fubuntu%3Apush%2Cpull&service=localhost HTTP/1.1[0m" 401 -
+2020-11-20 21:22:33,366 - 192.168.160.1 - - [20/Nov/2020 21:22:33] "[31m[1mGET /api/auth?scope=repository%3Amy%2Fubuntu%3Apush%2Cpull&service=localhost HTTP/1.1[0m" 401 -
+2020-11-20 21:22:33,373 - 192.168.160.1 - - [20/Nov/2020 21:22:33] "[31m[1mGET /api/auth?scope=repository%3Amy%2Fubuntu%3Apush%2Cpull&service=localhost HTTP/1.1[0m" 401 -
+2020-11-20 21:22:33,381 - 192.168.160.1 - - [20/Nov/2020 21:22:33] "[31m[1mGET /api/auth?scope=repository%3Amy%2Fubuntu%3Apush%2Cpull&service=localhost HTTP/1.1[0m" 401 -
+2020-11-20 21:22:33,388 - 192.168.160.1 - - [20/Nov/2020 21:22:33] "[31m[1mGET /api/auth?scope=repository%3Amy%2Fubuntu%3Apush%2Cpull&service=localhost HTTP/1.1[0m" 401 -

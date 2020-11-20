@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  auth:
+    restart: always
+    image: sergbelom/sts_docker_auth
+    container_name: sts_auth
+    volumes:
+      - ${PWD}/../certs:/certs
+      - ${PWD}/../auth_log:/auth_log
+    ports:
+      - "5001:5001"

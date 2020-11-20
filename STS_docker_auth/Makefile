@@ -10,13 +10,18 @@ init:
 
 clean:
 	find -name '*.pyc' -exec rm {} \;
-	docker rm -f sergbelom/sts_docker_auth
+	docker rm -f sts_docker_auth
 
 build: 
 	docker build . --tag sergbelom/sts_docker_auth
 
 run: 
-	docker run --volume ${PWD}/certs:/certs --publish 5001:5001 sergbelom/sts_docker_auth
+	docker run --entrypoint /bin/bash sergbelom/sts_docker_auth
 
 stop: 
-	docker stop sergbelom/sts_docker_auth
+	docker stop sts_docker_auth
+
+compose:	
+	docker-compose down
+	docker-compose build
+	docker-compose up

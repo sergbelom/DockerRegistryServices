@@ -1,4 +1,4 @@
-FROM python
+FROM python:2
 COPY STS_docker_auth.py .
 COPY requirements.txt .
 COPY users.auth .
