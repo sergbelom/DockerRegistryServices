@@ -50,7 +50,7 @@ Make файл в директории имеет две команды build и 
 
 - login и logout в сервис авторизации:
 
-    `docker login https://${HOSTNAME}:5000`
+    `docker login https://172.18.0.21:5000`
 
     `docker logout https://${HOSTNAME}:5000`
 
@@ -76,6 +76,15 @@ Make файл в директории имеет две команды build и 
 
     `docker stop sts_docker_auth_registry_1 && docker rm sts_docker_auth_registry_1`
 
-**6. TODO list:**
+**6. Сервис авторизации внутри STS.**
 
-- запустить контейнер внутри STS
+разворачивание:
+
+
+
+логин:
+
+    docker login localhost
+
+    docker logout localhost
+

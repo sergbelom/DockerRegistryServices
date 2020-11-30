@@ -18,7 +18,7 @@ services:
       - ${PWD}/certs:/certs
       - ${PWD}/registry-storage:/var/lib/registry
     networks:
-      - my-net
+      - my-net   
     depends_on:
       - sts_docker_auth
 

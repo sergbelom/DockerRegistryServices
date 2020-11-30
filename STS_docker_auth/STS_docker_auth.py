@@ -91,6 +91,11 @@ def get_token_claims(request_params):
         claims['access'] = get_allowed_actions(request_params)
     return claims
 
+def user_token():
+    #docker pull --token=[jwt] my-registry/my-image:latest
+    # workaround:
+    #docker pull --username=jwt --password=[token] registry/image:tag
+
 @app.route('/api/auth')
 def auth():
     request_params = dict(request.args)
