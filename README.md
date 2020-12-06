@@ -50,7 +50,7 @@ Make файл в директории имеет две команды build и 
 
 - login и logout в сервис авторизации:
 
-    `docker login https://172.18.0.21:5000`
+    `docker login https://${HOSTNAME}:5000`
 
     `docker logout https://${HOSTNAME}:5000`
 

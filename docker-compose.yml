@@ -7,18 +7,17 @@ services:
     ports:
       - 5000:5000
     environment:
-      REGISTRY_HTTP_TLS_CERTIFICATE: /certs/myregistry.crt
-      REGISTRY_HTTP_TLS_KEY: /certs/myregistry.key
       REGISTRY_AUTH: token
-      REGISTRY_AUTH_TOKEN_REALM: https://${HOSTNAME}:5001/api/auth
+      REGISTRY_AUTH_TOKEN_REALM: https://0.0.0.0:5001/api/auth
       REGISTRY_AUTH_TOKEN_SERVICE: localhost
       REGISTRY_AUTH_TOKEN_ISSUER: sergbelom
       REGISTRY_AUTH_TOKEN_ROOTCERTBUNDLE: /certs/STS_docker_auth.crt
-    volumes:
+    volumes:     
       - ${PWD}/certs:/certs
+      - ${PWD}/config.yml:/etc/docker/registry/config.yml
       - ${PWD}/registry-storage:/var/lib/registry
     networks:
-      - my-net   
+      - sts-net   
     depends_on:
       - sts_docker_auth
 
@@ -27,11 +26,22 @@ services:
     image: sergbelom/sts_docker_auth
     container_name: sts_docker_auth
     networks:
-      - my-net
+      - sts-net
     ports:
     - "5001:5001"
     volumes:
       - ${PWD}/certs:/certs
       - ${PWD}/auth_log:/auth_log
+
+  sts_listener_server:
+    restart: always
+    image: sergbelom/sts_listener_server
+    container_name: sts_listener_server
+    networks:
+      - sts-net
+    ports:
+    - "8086:8086"
+    volumes:
+      - ${PWD}/listener_log:/listener_log
 networks:
-  my-net:
+  sts-net:

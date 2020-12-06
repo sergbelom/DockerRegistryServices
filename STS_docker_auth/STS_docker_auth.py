@@ -91,10 +91,11 @@ def get_token_claims(request_params):
         claims['access'] = get_allowed_actions(request_params)
     return claims
 
-def user_token():
-    #docker pull --token=[jwt] my-registry/my-image:latest
-    # workaround:
-    #docker pull --username=jwt --password=[token] registry/image:tag
+# def user_token():
+#     #docker pull --token=[jwt] my-registry/my-image:latest
+#     # workaround:
+#     #docker pull --username=jwt --password=[token] registry/image:tag
+
 
 @app.route('/api/auth')
 def auth():
@@ -128,6 +129,7 @@ if __name__ == "__main__":
     with open(args.auth) as authfile:
         AUTH_STORE = json.load(authfile)
         LOG.info(AUTH_STORE)
+    LOG.info(args.cert)
     if not os.path.isfile(args.cert):
         LOG.error("cert file does not exist")
         raise ValueError("cert file does not exist")

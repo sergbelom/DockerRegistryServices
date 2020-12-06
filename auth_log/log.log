@@ -1,1 +1,9 @@
-
+2020-12-06 17:40:16,520 - LOG STARTED
+2020-12-06 17:40:16,520 - certs/STS_docker_auth.crt
+2020-12-06 17:40:16,520 - certs/STS_docker_auth.key
+2020-12-06 17:40:16,520 - users.auth
+2020-12-06 17:40:16,529 - {u'foo': u'bar'}
+2020-12-06 17:40:16,529 - certs/STS_docker_auth.crt
+2020-12-06 17:40:16,539 -  * Running on https://0.0.0.0:5001/ (Press CTRL+C to quit)
+2020-12-06 17:40:59,544 - 172.24.0.1 - - [06/Dec/2020 17:40:59] "[37mGET /api/auth?account=foo&client_id=docker&offline_token=true&service=localhost HTTP/1.1[0m" 200 -
+2020-12-06 17:41:19,751 - 172.24.0.1 - - [06/Dec/2020 17:41:19] "[37mGET /api/auth?account=foo&scope=repository%3Amy%2Fubuntu%3Apush%2Cpull&service=localhost HTTP/1.1[0m" 200 -

@@ -19,7 +19,7 @@ health:
 notifications:
     endpoints:
       - name: alistener
-        url: http://0.0.0.0:8086/registry/
+        url: http://0.0.0.0:8086/log
         headers:
             Authorization: [Bearer <your token, if needed>]
         timeout: 500ms
