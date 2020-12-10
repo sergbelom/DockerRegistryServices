@@ -38,10 +38,16 @@ services:
     image: sergbelom/sts_listener_server
     container_name: sts_listener_server
     networks:
-      - sts-net
+      sts-net:
+        ipv4_address: 172.16.1.3
     ports:
     - "8086:8086"
     volumes:
       - ${PWD}/listener_log:/listener_log
 networks:
   sts-net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.1.0/24

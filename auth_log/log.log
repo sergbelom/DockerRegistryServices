@@ -1,9 +1,11 @@
-2020-12-06 17:40:16,520 - LOG STARTED
-2020-12-06 17:40:16,520 - certs/STS_docker_auth.crt
-2020-12-06 17:40:16,520 - certs/STS_docker_auth.key
-2020-12-06 17:40:16,520 - users.auth
-2020-12-06 17:40:16,529 - {u'foo': u'bar'}
-2020-12-06 17:40:16,529 - certs/STS_docker_auth.crt
-2020-12-06 17:40:16,539 -  * Running on https://0.0.0.0:5001/ (Press CTRL+C to quit)
-2020-12-06 17:40:59,544 - 172.24.0.1 - - [06/Dec/2020 17:40:59] "[37mGET /api/auth?account=foo&client_id=docker&offline_token=true&service=localhost HTTP/1.1[0m" 200 -
-2020-12-06 17:41:19,751 - 172.24.0.1 - - [06/Dec/2020 17:41:19] "[37mGET /api/auth?account=foo&scope=repository%3Amy%2Fubuntu%3Apush%2Cpull&service=localhost HTTP/1.1[0m" 200 -
+2020-12-07 11:03:43,265 - LOG STARTED
+2020-12-07 11:03:43,265 - certs/STS_docker_auth.crt
+2020-12-07 11:03:43,265 - certs/STS_docker_auth.key
+2020-12-07 11:03:43,265 - users.auth
+2020-12-07 11:03:43,275 - {u'foo': u'bar'}
+2020-12-07 11:03:43,275 - certs/STS_docker_auth.crt
+2020-12-07 11:03:43,282 -  * Running on https://0.0.0.0:5001/ (Press CTRL+C to quit)
+2020-12-07 11:04:08,541 - eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlBTTzc6MlBOUTo2UzVZOlo0MkI6VEtYUjpZWk9YOjJMVUE6UVI3VDpMWUFQOk9JWVQ6RFJaWDpRWklTIn0.eyJpc3MiOiJzZXJnYmVsb20iLCJuYmYiOjE2MDczMzkwNDgsImV4cCI6MTYwNzQyNTQ0OCwiYXVkIjoibG9jYWxob3N0In0.NrwJJJcA_L_bpmAXNwblAWMBMLiXs-t4BFB05LVIxWRSQ8WI4Av-dsZZKKNei5ay_OvzfoCyk1rEEEtIB3A-1x6HnWpiUJSmrSqQ2I_LmMkfTbMLkZovpmczp0C5jESFmqCdZJASgwK1eDItDiNzKQPMQ2yCckDBj3Npd3s-KaBHtAM700W5FyEKzLlLtU8aJpODaoGwv4fEUzZ7giOr6REKswxyGHbIRoH_t6Wqyf-Wh7e-4cMp15dr3KmwMisMNJhO5KH_DDsudAw6zwXYLaxiD_lz5JhBdIq04qB2HfV5kM0B3jUc3BU0CjEfmedLMTiYl84NQ0ewtGWw1wdnvg
+2020-12-07 11:04:08,547 - 172.16.1.1 - - [07/Dec/2020 11:04:08] "[37mGET /api/auth?account=foo&client_id=docker&offline_token=true&service=localhost HTTP/1.1[0m" 200 -
+2020-12-07 11:04:16,721 - eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlBTTzc6MlBOUTo2UzVZOlo0MkI6VEtYUjpZWk9YOjJMVUE6UVI3VDpMWUFQOk9JWVQ6RFJaWDpRWklTIn0.eyJpc3MiOiJzZXJnYmVsb20iLCJhY2Nlc3MiOlt7InR5cGUiOiJyZXBvc2l0b3J5IiwibmFtZSI6Im15L3VidW50dSIsImFjdGlvbnMiOlsicHVzaCIsInB1bGwiXX1dLCJuYmYiOjE2MDczMzkwNTYsImV4cCI6MTYwNzQyNTQ1NiwiYXVkIjoibG9jYWxob3N0In0.YEYgioXodWf7MUDYQVhmMvoZ78SQwKe-f1yBQSYTe-20fpl1AeAp1eDlt0KPqFrfJ-ft2Of143gMKVPzaM2kEDzUYRcojoeo4voikUdRawN1XC0G1nL-Clc7QSSmjDRXEqhIOMih8w9lucvFOX7Arc9SBMQVXdhgNW9IZy-dGDoH3kuns_6zcHErwcKxZcp8ldoLdm9i9RbGLDI9dC-0hIqawWX1JfGTaUVzOiyyZEHxNS5unklJ24YmI5XumzMqZeDDE4G7jhfUKE-LPeURNbeV9ZvQbWBFj6hSidTSSKOXykX2DL2-oEt7__tbrob71U2j_WTsmebZV1ZHJ2L51w
+2020-12-07 11:04:16,723 - 172.16.1.1 - - [07/Dec/2020 11:04:16] "[37mGET /api/auth?account=foo&scope=repository%3Amy%2Fubuntu%3Apush%2Cpull&service=localhost HTTP/1.1[0m" 200 -

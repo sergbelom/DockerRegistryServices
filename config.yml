@@ -2,6 +2,12 @@ version: 0.1
 log:
   fields:
     service: registry
+# auth:
+#   token:
+#     realm: https://0.0.0.0:5001/api/auth
+#     service: registry
+#     issuer: sergbelom
+#     rootcertbundle: /certs/myregistry.crt
 storage:
   cache:
     blobdescriptor: inmemory
@@ -19,7 +25,7 @@ health:
 notifications:
     endpoints:
       - name: alistener
-        url: http://0.0.0.0:8086/log
+        url: http://172.16.1.3:8086/log
         headers:
             Authorization: [Bearer <your token, if needed>]
         timeout: 500ms

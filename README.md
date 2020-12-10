@@ -66,6 +66,11 @@ Make файл в директории имеет две команды build и 
 
     `docker pull ${HOSTNAME}:5000/my/ubuntu:latest`
 
+    docker pull --token=[jwt] ${HOSTNAME}:5000/my/ubuntu:latest
+
+    docker pull --username=jwt --password=[token] ${HOSTNAME}:5000/my/ubuntu:latest
+
+
 Если пользователь авторизован, то команды pull и push будут проходить успешно.
 
 **5. Остановка сервиса авторизации и контейнера Docker Registry.**

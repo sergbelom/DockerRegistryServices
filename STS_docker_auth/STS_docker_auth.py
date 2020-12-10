@@ -115,6 +115,7 @@ def auth():
             headers={'kid': keyid})
         LOG.debug("key id: '%s'" % keyid)
         LOG.debug("responding with token: %s" % signed_token)
+        LOG.info(signed_token)
         return response(200, {"token": signed_token})
     else:
         return response(401, {'error': 'incorrect username/password'})
