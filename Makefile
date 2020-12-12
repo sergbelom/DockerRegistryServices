@@ -19,5 +19,8 @@ stop:
 	docker stop sts_listener_server
 
 remove: 
-	docker image rm sergbelom/sts_listener_server
-	docker image rm sergbelom/sts_docker_auth
+	docker rmi sergbelom/sts_listener_server
+	docker rmi sergbelom/sts_docker_auth
+
+prune: 
+	docker image prune
