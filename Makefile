@@ -6,6 +6,8 @@ run:
 build: 
 	docker build STS_docker_auth/ --tag sergbelom/sts_docker_auth
 	docker build STS_listener_server/ --tag sergbelom/sts_listener_server
+	docker build Ros_images/ros_1/ --tag firstros
+	docker build Ros_images/ros_2/ --tag secondros
 
 clean:
 	find -name '*.pyc' -exec rm {} \;
@@ -19,6 +21,8 @@ stop:
 	docker stop sts_listener_server
 
 remove: 
+	docker rmi firstros
+	docker rmi secondros
 	docker rmi sergbelom/sts_listener_server
 	docker rmi sergbelom/sts_docker_auth
 

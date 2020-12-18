@@ -35,9 +35,9 @@ notifications:
       backoff: 1s
       ignoredmediatypes:
         - application/octet-stream
-      ignore:
-        mediatypes:
-           - application/octet-stream
+      # ignore:
+      #   mediatypes:
+      #      - application/octet-stream
 # notifications:
 #     endpoints:
 #       - name: alistener

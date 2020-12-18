@@ -56,21 +56,45 @@ Make файл в директории имеет две команды build и 
 
 - login и logout в сервис авторизации:
 
-    `docker login https://${HOSTNAME}:5000`
+    docker login https://${HOSTNAME}:5000
 
-    `docker logout https://${HOSTNAME}:5000`
+    docker logout https://${HOSTNAME}:5000
 
 - создание тега образа для Docker Registry:
 
-    `docker pull ubuntu:latest`
+    небольшие образы:
 
-    `docker tag ubuntu:wily ${HOSTNAME}:5000/my/ubuntu:latest`
+    - ubuntu:
+
+    docker pull ubuntu:latest
+
+    docker tag ubuntu:latest ${HOSTNAME}:5000/my/ubuntu:latest
+
+    образы размера ~ 1 Gb
+
+    - mssql-server-linux:
+
+    docker tag microsoft/mssql-server-linux:latest ${HOSTNAME}:5000/microsoft/mssql-server-linux:latest
+
+    docker push ${HOSTNAME}:5000/microsoft/mssql-server-linux:latest
+
+    - ros:
+
+    docker tag ros:latest ${HOSTNAME}:5000/my/ros:latest
+
+    docker push ${HOSTNAME}:5000/my/ros:latest
+
+    - python:
+
+    docker tag python:2 ${HOSTNAME}:5000/my/python:2
+
+    docker push ${HOSTNAME}:5000/my/python:2
 
 - команды pull и push для Docker Registry:
 
-    `docker push ${HOSTNAME}:5000/my/ubuntu:latest`
+    docker push ${HOSTNAME}:5000/my/ubuntu:latest
 
-    `docker pull ${HOSTNAME}:5000/my/ubuntu:latest`
+    docker pull ${HOSTNAME}:5000/my/ubuntu:latest
 
     docker pull --token=[jwt] ${HOSTNAME}:5000/my/ubuntu:latest
 
