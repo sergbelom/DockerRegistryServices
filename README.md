@@ -1,33 +1,16 @@
-**Сервис авторизации на основе JSON token с приватным Docker Registry**
+
+**Архитектура**
+
+![](Arch.png)
 
 
-Dokcer позволяет локально развернуть приватное хранилище образов Docker Registry.
+**Команды для разворачивания STS_docker_auth в контейнере**
 
-Доступ к Docker Registry можно реализовать на основе токен аутентификации.
-
-Возможность разработки такого сервиса описана в [документации](https://docs.docker.com/registry/spec/auth/token/).
-
-
-**Существующие сервисы авторизации**
-
-
-Сущесвтует готовое решение [docker_auth](https://github.com/cesanta/docker_auth) разработанное на Go, которое позволяет настроить авторизацию с помощью разлчиных методов (лист пользователей, gooogle авторизация, github авторизация и т.п.)
-
-Разработка собственного решения обоснована необходимостью иметь встроенный сервис авторизации, как часть SLAM Testing Service (STS), написанного на C++.
-
-
-**Сервис авторизации STS_docker_auth**
-
-Сервис авторизации разработан на python для токен-автризации на основе JSON web token.
-
-
-**Команды для разворачивания STS_docker_auth**
-
-1. Создать HOSTNAME
+**1. Создать HOSTNAME**
 
     `export HOSTNAME=$(hostname)`
 
-2. Сертификаты.
+**2. Сертификаты.**
 
 Для работы docker registry и cервис авторизации необходимо [настроить сертификаты](https://docs.docker.com/registry/insecure/).
 
@@ -57,66 +40,86 @@ Dokcer позволяет локально развернуть приватно
 
     `sudo service docker restart`
 
-3. Запуск сервиса авторизации STS_docker_auth.
+**3. Build образа. Запуск контейнера с сервисом авторизации STS_docker_auth. Запуск Docker Registry.**
 
-STS_docker_auth на порту 5001, который слушает Docker Registry.
+STS_docker_auth на порту 5001, Docker Registry на порту 5000.
 
-В директории STS_docker_auth/STS_docker_auth необходимо:
+Необходимо перейти находится в корневой директории репозитория STS_docker_auth.
 
-- создать python окружение
+Make файл в директории имеет две команды build и run.
 
-    `make venv && . venv.STS_docker_auth/bin/activate`
+   `make build` будет собран образ *sergbelom/sts_docker_auth*
 
-- установить необходимые пакеты (flask, pyjwt, pycrypto, cryptography)
+   `make run` в терминале будет запущен docker compose *docker registry* и *sts_docker_auth*
 
-    `make init`
-
-- запустить сервис
-
-    `./STS_docker_auth.py`
-
-4. Запуск Docker Registry.
-
-Docker Registry будет запущен на порту 5000.
-
-- перейти в другой терминал и запустить Docker Registry из docker-compose.yml
-
-    `docker-compose up -d`
-
-4. Авторизация. 
-
-JSON с доступными пользователями находится в STS_docker_auth/users.auth
+**4. Авторизация.**
 
 - login и logout в сервис авторизации:
 
-    `docker login https://${HOSTNAME}:5000`
+    docker login https://${HOSTNAME}:5000
 
-    `docker logout https://${HOSTNAME}:5000`
-
-    существующие пользователи (доступны в users.auth):
-
-    `user: foo password: bar`
+    docker logout https://${HOSTNAME}:5000
 
 - создание тега образа для Docker Registry:
 
-    `docker pull ubuntu:latest`
+    небольшие образы:
 
-    `docker tag ubuntu:wily ${HOSTNAME}:5000/my/ubuntu:latest`
+    - ubuntu:
+
+    docker pull ubuntu:latest
+
+    docker tag ubuntu:latest ${HOSTNAME}:5000/my/ubuntu:latest
+
+    образы размера ~ 1 Gb
+
+    - mssql-server-linux:
+
+    docker tag microsoft/mssql-server-linux:latest ${HOSTNAME}:5000/microsoft/mssql-server-linux:latest
+
+    docker push ${HOSTNAME}:5000/microsoft/mssql-server-linux:latest
+
+    - ros:
+
+    docker tag ros:latest ${HOSTNAME}:5000/my/ros:latest
+
+    docker push ${HOSTNAME}:5000/my/ros:latest
+
+    - python:
+
+    docker tag python:2 ${HOSTNAME}:5000/my/python:2
+
+    docker push ${HOSTNAME}:5000/my/python:2
 
 - команды pull и push для Docker Registry:
 
-    `docker push ${HOSTNAME}:5000/my/ubuntu:latest`
+    docker push ${HOSTNAME}:5000/my/ubuntu:latest
 
-    `docker pull ${HOSTNAME}:5000/my/ubuntu:latest`
+    docker pull ${HOSTNAME}:5000/my/ubuntu:latest
+
+    docker pull --token=[jwt] ${HOSTNAME}:5000/my/ubuntu:latest
+
+    docker pull --username=jwt --password=[token] ${HOSTNAME}:5000/my/ubuntu:latest
+
 
 Если пользователь авторизован, то команды pull и push будут проходить успешно.
 
-В терминале с запущенным STS_docker_auth можно отслеживать лог авторизации.
+**5. Остановка сервиса авторизации и контейнера Docker Registry.**
 
-5. Остановка сервиса авторизации и контейнера Docker Registry.
+    Ctrl-C в терминале с запущенным docker compose 
 
-- сервис авторизации можно остановить стандартно в терминал Ctrl-C.
-
-- остановить и удалить контейнер для Docker Registry можно командой
+    `docker stop sts_docker_auth && docker rm sts_docker_auth`
 
     `docker stop sts_docker_auth_registry_1 && docker rm sts_docker_auth_registry_1`
+
+**6. Сервис авторизации внутри STS.**
+
+разворачивание:
+
+
+
+логин:
+
+    docker login localhost
+
+    docker logout localhost
+
