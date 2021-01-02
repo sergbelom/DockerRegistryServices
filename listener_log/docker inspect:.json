@@ -1,0 +1,115 @@
+docker inspect:
+[
+    {
+        "Id": "sha256:314918ddaedfedc0345d3191546d800bd7f28bae180541c9b8b45776d322c8c2",
+        "RepoTags": [
+            "microsoft/mssql-server-linux:latest",
+            "sergbelom-PC:5000/microsoft/mssql-server-linux:latest"
+        ],
+        "RepoDigests": [
+            "microsoft/mssql-server-linux@sha256:9b700672670bb3db4b212e8aef841ca79eb2fce7d5975a5ce35b7129a9b90ec0",
+            "sergbelom-PC:5000/microsoft/mssql-server-linux@sha256:be057b6aea87677aad86aaaaf8ce9c6bc7028d1a2d794efc2005ce5f0370d9cc"
+        ],
+        "Parent": "",
+        "Comment": "",
+        "Created": "2018-12-17T19:37:22.052136555Z",
+        "Container": "ad4994d21cb3a364fcac4e419fd5827e1723c86e767a321876c49f8f75c7d132",
+        "ContainerConfig": {
+            "Hostname": "4dcf0239b565",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "ExposedPorts": {
+                "1433/tcp": {}
+            },
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+            ],
+            "Cmd": [
+                "/bin/sh",
+                "-c",
+                "#(nop) ",
+                "CMD [\"/opt/mssql/bin/sqlservr\"]"
+            ],
+            "ArgsEscaped": true,
+            "Image": "sha256:becb2cc726794b29b88a3a2a82cf524080b551b81b67f143fefc2970310fb6c8",
+            "Volumes": null,
+            "WorkingDir": "",
+            "Entrypoint": null,
+            "OnBuild": [],
+            "Labels": {
+                "com.microsoft.product": "Microsoft SQL Server",
+                "com.microsoft.version": "14.0.3048.4",
+                "vendor": "Microsoft"
+            }
+        },
+        "DockerVersion": "1.13.0",
+        "Author": "dpgswdist@microsoft.com",
+        "Config": {
+            "Hostname": "4dcf0239b565",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "ExposedPorts": {
+                "1433/tcp": {}
+            },
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+            ],
+            "Cmd": [
+                "/opt/mssql/bin/sqlservr"
+            ],
+            "ArgsEscaped": true,
+            "Image": "sha256:becb2cc726794b29b88a3a2a82cf524080b551b81b67f143fefc2970310fb6c8",
+            "Volumes": null,
+            "WorkingDir": "",
+            "Entrypoint": null,
+            "OnBuild": [],
+            "Labels": {
+                "com.microsoft.product": "Microsoft SQL Server",
+                "com.microsoft.version": "14.0.3048.4",
+                "vendor": "Microsoft"
+            }
+        },
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 1353110161,
+        "VirtualSize": 1353110161,
+        "GraphDriver": {
+            "Data": {
+                "LowerDir": "/var/lib/docker/overlay2/dd7b6709b12494bb1a8628a0f9f9c4cbfb6f50ada6108a98e96102f23375cee7/diff:/var/lib/docker/overlay2/eca34bca69eb64ca9aac2c68ad958b3cd18313fc85386bbe16f5afef009026b4/diff:/var/lib/docker/overlay2/3f4bab51599c4ea58f4c4854fdb39d4df6bcbc784d88c5e69438059c75f16e0f/diff:/var/lib/docker/overlay2/4fe08e22fb40da07dd78d124a2b0df5bc9b2866627ef0fb6e6c42cdeac9d7a1a/diff:/var/lib/docker/overlay2ib/docker/overlay2/30bd5298d75f7a8a82099cea755d9fc7204afee369f3ed8acbad48937650e514/diff:/var65d65862/diff:/var/lib/docker/overlay2/7e275484f7c25d540fb6d91f831ad7c9576736f72c15efb84636ad
+                "MergedDir": "/var/lib/docker/overlay2/d9eaf632b08965cb40d9e459b0c849211afebb
+                "UpperDir": "/var/lib/docker/overlay2/d9eaf632b08965cb40d9e459b0c849211afebb3
+                "WorkDir": "/var/lib/docker/overlay2/d9eaf632b08965cb40d9e459b0c849211afebb3a
+            },
+            "Name": "overlay2"
+        },
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:644879075e24394efef8a7dddefbc133aad42002df6223cacf98bd1e3d5ddde2",
+                "sha256:d7ff1dc646ba52a02312b535446d6c9b72cd09fda0480524e4828554efb2f748",
+                "sha256:686245e78935e73b737c9a82111c3c7df35f5529d06ce8c2f9a7cd32ec90b456",
+                "sha256:d73dd9e652956dccbbef716de4b172cc15fff644cc92fc69d221cc3a1cb89a39",
+                "sha256:2de391e51d731ba02b708038a7f98b7103061b916727bcd165e9ee6402f4cdde",
+                "sha256:d33a8ef9dea5016c8647174b5580425f021385b9ab87453cd7508587c030305c",
+                "sha256:911ad08015cfe167b552e1c330220f90e4ff82f572bfb309f7e3afab619d71fc",
+                "sha256:be08dc7c21612388e812298a006b9fd65095b985de77c71d62f20008945997a6",
+                "sha256:79b07b78f674ac90913b63152a2cf7060d363552b6174cc966bd841569b7fb95"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2020-12-17T19:24:30.33454917+03:00"
+        }
+    }
+]

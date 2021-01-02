@@ -44,6 +44,27 @@ services:
     - "8086:8086"
     volumes:
       - ${PWD}/listener_log:/listener_log
+
+  cleanup_server:
+    image: sergbelom/registry-cleanup
+    build: Cleanup_server/
+    volumes:
+    - ${PWD}/registry-storage:/registry
+    ports:
+    - 5005:5005
+    environment:
+    - REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY=/registry
+
+  space_available_server:
+    image: sergbelom/space_available_server
+    build: Space_available_server/
+    volumes:
+    - ${PWD}/registry-storage:/registry
+    ports:
+    - 5010:5010
+    environment:
+    - REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY=/registry
+
 networks:
   sts-net:
     driver: bridge

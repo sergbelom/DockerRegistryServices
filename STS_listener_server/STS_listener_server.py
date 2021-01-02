@@ -69,7 +69,7 @@ def show_post():
     # logging.info('DATA:')
     data = request.data.decode('utf-8')
     parse_and_log_request_data(data)
-    #logging.info(data)
+    logging.info(data)
     #parse_and_log_request_data(data)
     #logging.info('--------------------')
     return '', 200

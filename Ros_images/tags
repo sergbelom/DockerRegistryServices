@@ -1,7 +1,24 @@
-    docker tag firstros:latest ${HOSTNAME}:5000/firstros:latest
+docker tag firstros:latest ${HOSTNAME}:5000/firstros:latest
 
-    docker push ${HOSTNAME}:5000/firstros:latest
+docker push ${HOSTNAME}:5000/firstros:latest
 
-    docker tag secondros:latest ${HOSTNAME}:5000/secondros:latest
+docker tag secondros:latest ${HOSTNAME}:5000/secondros:latest
 
-    docker push ${HOSTNAME}:5000/secondros:latest
+docker push ${HOSTNAME}:5000/secondros:latest
+
+Описание теста:
+- 
+
+
+Результат:
+- 
+
+
+
+
+-------------------------------------------
+- Погуглить на контроль дискового пространсва в registry
+- По заврешению точно можно узнать
+-------------------------------------------
+
+
