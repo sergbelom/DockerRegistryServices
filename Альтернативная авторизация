@@ -1,0 +1,24 @@
+Альтернативная авторизация:
+
+- токен запоминается и при следующих pull push login вводить не нужно
+
+0. 
+docker pull --token=[jwt] https://${HOSTNAME}:5000 
+docker pull --username=jwt --password=[token] https://${HOSTNAME}:5000 
+
+docker login --username --username=jwt --password=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlBTTzc6MlBOUTo2UzVZOlo0MkI6VEtYUjpZWk9YOjJMVUE6UVI3VDpMWUFQOk9JWVQ6RFJaWDpRWklTIn0.eyJpc3MiOiJzZXJnYmVsb20iLCJuYmYiOjE2MDczMzE1NDUsImV4cCI6MTYwNzQxNzk0NSwiYXVkIjoibG9jYWxob3N0In0.h1gIPumJSZZLExJiZVimJU0hA4eSUqp9CcLmQYQxpSd2PFTyjC_o0fMiynSAjZRVmg1Y9st1-vgiSWtgkXWjRorH5LD2uuZ1ZjlHnXBeEYjanzBJ4X-oPm8lisq_LR-ernUlRE4EwdyZf5UVmYnOMe2xdNFiaWV8GK7WWUQz0IIfM5cWMAsirY2DA5-WlK2VSubLAMgwicDQnrAO_cENT8MxFwNu51enPNSg42IuDRNAlypSRKt_r4uaax_DM-oteV76ydZZhnXTHE1Uh8pwAXOIWWBmVTyu0LCzGN1NaHQpbHRBe46RgDxanGBYqnUPf23LgBISNe3Y-bpuicx07Q https://${HOSTNAME}:5000
+
+cat token.txt | docker login https://${HOSTNAME}:5000 -u foo --password-stdin
+
+cat pwd.txt | docker login https://${HOSTNAME}:5000 -u foo --password-stdin
+
+
+2. json_key
+generate key create --service-account-name default-sa -o key.json
+
+После подключения, закодированная в base64 пара username:password будет сохранена в файле $HOME/.docker/config.json
+
+cat key.json | docker login \
+--username json_key \
+--password-stdin \
+https://${HOSTNAME}:5000

@@ -1,0 +1,7 @@
+*.crt
+*.key
+auth_log/*.log
+listener_log/*.log
+registry-storage/*
+.idea
+venv

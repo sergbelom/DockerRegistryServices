@@ -1,0 +1,7 @@
+2020-12-28 03:42:58,155 - LOG STARTED
+2020-12-28 03:42:58,155 - certs/STS_docker_auth.crt
+2020-12-28 03:42:58,155 - certs/STS_docker_auth.key
+2020-12-28 03:42:58,155 - users.auth
+2020-12-28 03:42:58,161 - {u'foo': u'bar'}
+2020-12-28 03:42:58,162 - certs/STS_docker_auth.crt
+2020-12-28 03:42:58,169 -  * Running on https://0.0.0.0:5001/ (Press CTRL+C to quit)

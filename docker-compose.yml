@@ -1,16 +1,74 @@
-registry:
-  restart: always
-  image: registry:2
-  ports:
-    - 5000:5000
-  environment:
-    REGISTRY_HTTP_TLS_CERTIFICATE: /certs/myregistry.crt
-    REGISTRY_HTTP_TLS_KEY: /certs/myregistry.key
-    REGISTRY_AUTH: token
-    REGISTRY_AUTH_TOKEN_REALM: https://${HOSTNAME}:5001/api/auth
-    REGISTRY_AUTH_TOKEN_SERVICE: localhost
-    REGISTRY_AUTH_TOKEN_ISSUER: sergbelom
-    REGISTRY_AUTH_TOKEN_ROOTCERTBUNDLE: /certs/STS_docker_auth.crt
-  volumes:
-    - ${PWD}/certs:/certs
-    - ${PWD}/registry-storage:/var/lib/registry
+version: "3"
+
+services:
+  registry:
+    restart: always
+    image: registry:2
+    ports:
+      - 5000:5000
+    environment:
+      REGISTRY_AUTH: token
+      REGISTRY_AUTH_TOKEN_REALM: https://0.0.0.0:5001/api/auth
+      REGISTRY_AUTH_TOKEN_SERVICE: localhost
+      REGISTRY_AUTH_TOKEN_ISSUER: sergbelom
+      REGISTRY_AUTH_TOKEN_ROOTCERTBUNDLE: /certs/STS_docker_auth.crt
+    volumes:     
+      - ${PWD}/certs:/certs
+      - ${PWD}/config.yml:/etc/docker/registry/config.yml
+      - ${PWD}/registry-storage:/var/lib/registry
+    networks:
+      - sts-net   
+    depends_on:
+      - sts_docker_auth
+
+  sts_docker_auth:
+    restart: always
+    image: sergbelom/sts_docker_auth
+    container_name: sts_docker_auth
+    networks:
+      - sts-net
+    ports:
+    - "5001:5001"
+    volumes:
+      - ${PWD}/certs:/certs
+      - ${PWD}/auth_log:/auth_log
+
+  sts_listener_server:
+    restart: always
+    image: sergbelom/sts_listener_server
+    container_name: sts_listener_server
+    networks:
+      sts-net:
+        ipv4_address: 172.16.1.3
+    ports:
+    - "8086:8086"
+    volumes:
+      - ${PWD}/listener_log:/listener_log
+
+  cleanup_server:
+    image: sergbelom/registry-cleanup
+    build: Cleanup_server/
+    volumes:
+    - ${PWD}/registry-storage:/registry
+    ports:
+    - 5005:5005
+    environment:
+    - REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY=/registry
+
+  space_available_server:
+    image: sergbelom/space_available_server
+    build: Space_available_server/
+    volumes:
+    - ${PWD}/registry-storage:/registry
+    ports:
+    - 5010:5010
+    environment:
+    - REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY=/registry
+
+networks:
+  sts-net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.1.0/24

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from flask import Flask, Response
-from flask import (jsonify, request)
+from flask import jsonify, request
 
 import re
 import os
@@ -16,12 +16,18 @@ import base64
 import hashlib
 from Crypto.PublicKey import RSA
 
-logging.basicConfig(level=logging.DEBUG, stream=sys.stderr, format='%(asctime)s - %(message)s')
+# logging.basicConfig(level=logging.INFO, stream=sys.stderr, format='%(asctime)s - %(message)s')
+LOG_FILE = os.path.join('auth_log', 'log.log')
+logging.basicConfig(filename=LOG_FILE, filemode='w', level=logging.INFO, format='%(asctime)s - %(message)s')
+logging.info('LOG STARTED')
 LOG = logging.getLogger(__name__)
-
-CERT = os.path.join('..', 'certs', 'STS_docker_auth.crt')
-KEY = os.path.join('..', 'certs', 'STS_docker_auth.key')
+CERT = os.path.join('certs', 'STS_docker_auth.crt')
+KEY  = os.path.join('certs', 'STS_docker_auth.key')
 AUTH = os.path.join('users.auth')
+
+logging.info(CERT)
+logging.info(KEY)
+logging.info(AUTH)
 
 SIGNKEY = None
 AUTH_STORE = {}
@@ -66,15 +72,10 @@ def get_allowed_actions(request_params):
     """Get list of allowed actions"""
     allowed_actions = []
     for requested_permissions in request_params['scope']:
-            type, name, actions = requested_permissions.split(':')
-            actions = actions.split(',')
-            allowed_actions.append({
-                'type': type,
-                'name': name,
-                'actions': actions
-            })
+        type, name, actions = requested_permissions.split(':')
+        actions = actions.split(',')
+        allowed_actions.append({'type': type,'name': name,'actions': actions})
     return allowed_actions
-
 
 def get_token_claims(request_params):
     """Get token for user"""
@@ -90,6 +91,11 @@ def get_token_claims(request_params):
         claims['access'] = get_allowed_actions(request_params)
     return claims
 
+# def user_token():
+#     #docker pull --token=[jwt] my-registry/my-image:latest
+#     # workaround:
+#     #docker pull --username=jwt --password=[token] registry/image:tag
+
 
 @app.route('/api/auth')
 def auth():
@@ -103,40 +109,35 @@ def auth():
         return response(401, {'error': 'malformed Authorization header'})
     user, password = base64.b64decode(auth_header.group(1)).split(':')
     if user in AUTH_STORE and AUTH_STORE[user] == password:
-        keyid = key_id_algorithm(SIGNKEY)        
+        keyid = key_id_algorithm(SIGNKEY)
         signed_token = jwt.encode(
             get_token_claims(request_params), SIGNKEY, algorithm='RS256',
             headers={'kid': keyid})
         LOG.debug("key id: '%s'" % keyid)
         LOG.debug("responding with token: %s" % signed_token)
+        LOG.info(signed_token)
         return response(200, {"token": signed_token})
     else:
         return response(401, {'error': 'incorrect username/password'})
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--auth", default=AUTH, help='Dictionary of form {"user": "password", ... }.')
-    parser.add_argument("--port", type=int, default=5001, help="HTTPS port.")
-    parser.add_argument("--cert", default=CERT, help="TLS cert (PEM file).")
-    parser.add_argument("--key",  default=KEY, help="TLS key (PEM file).")
+    parser.add_argument("--auth", default=AUTH)
+    parser.add_argument("--port", type=int, default=5001)
+    parser.add_argument("--cert", default=CERT)
+    parser.add_argument("--key", default=KEY)
     args = parser.parse_args()
-
     with open(args.auth) as authfile:
         AUTH_STORE = json.load(authfile)
         LOG.info(AUTH_STORE)
-
+    LOG.info(args.cert)
     if not os.path.isfile(args.cert):
         LOG.error("cert file does not exist")
         raise ValueError("cert file does not exist")
-   
     if not os.path.isfile(args.key):
         LOG.error("key file does not exist")
         raise ValueError("key file does not exist")
-
     with open(args.key) as keyfile:
         SIGNKEY = keyfile.read()
-    
     ssl_cert = (args.cert, args.key)
-    app.run(
-        host='0.0.0.0', port=args.port,
-        ssl_context=ssl_cert, threaded=True)
+    app.run(host='0.0.0.0', port=args.port, ssl_context=ssl_cert, threaded=True)
